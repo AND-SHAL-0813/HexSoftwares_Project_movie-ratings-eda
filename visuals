@@ -1,0 +1,57 @@
+import matplotlib.pyplot as plt
+import seaborn as sns
+import matplotlib.gridspec as gridspec
+
+# 1. Dashboard Configuration
+sns.set_theme(style="whitegrid")
+fig = plt.figure(figsize=(18, 12))
+fig.suptitle('🎬 MOVIE ANALYTICS DASHBOARD', fontsize=26, fontweight='bold', color='#2c3e50')
+gs = gridspec.GridSpec(3, 3, figure=fig)
+
+# --- CHART 1: Overall Rating Distribution ---
+ax1 = fig.add_subplot(gs[0, :2])
+sns.histplot(df['imdb_score'], bins=20, kde=True, color='#3498db', ax=ax1)
+ax1.set_title('Global Rating Distribution', fontsize=16, fontweight='bold')
+ax1.axvline(df['imdb_score'].mean(), color='red', linestyle='--', label=f"Mean: {df['imdb_score'].mean():.2f}")
+ax1.legend()
+
+# --- CHART 2: Genre Performance (Bar Chart) ---
+# Preparing data: Average rating per genre (Top 10)
+top_genres = df.groupby('genres')['imdb_score'].mean().sort_values(ascending=False).head(10)
+ax2 = fig.add_subplot(gs[1, :2])
+sns.barplot(x=top_genres.values, y=top_genres.index, palette='viridis', ax=ax2)
+ax2.set_title('Top 10 Genres by Average Rating', fontsize=16, fontweight='bold')
+ax2.set_xlabel('Mean IMDb Score')
+
+# --- CHART 3: Rating Consistency (Boxplot) ---
+ax3 = fig.add_subplot(gs[2, :2])
+sns.boxplot(x='imdb_score', y='genres', data=df[df['genres'].isin(top_genres.index)], palette='Pastel1', ax=ax3)
+ax3.set_title('Rating Spread of Top Genres', fontsize=16, fontweight='bold')
+
+# --- PANEL 4: Summary Metrics (Text-based) ---
+ax4 = fig.add_subplot(gs[0, 2])
+ax4.axis('off')
+stats_text = (
+    f"📊 KEY METRICS\n"
+    f"{'—'*20}\n"
+    f"Total Records: {len(df)}\n"
+    f"Global Mean: {df['imdb_score'].mean():.2f}\n"
+    f"Global Median: {df['imdb_score'].median():.2f}\n"
+    f"Global Mode: {df['imdb_score'].mode()[0]}\n"
+    f"Standard Dev: {df['imdb_score'].std():.2f}"
+)
+ax4.text(0.1, 0.5, stats_text, fontsize=15, family='monospace', verticalalignment='center',
+         bbox=dict(boxstyle='round,pad=1', facecolor='#ecf0f1', alpha=0.5))
+
+# --- PANEL 5: Top 10 Highest Rated Movies ---
+ax5 = fig.add_subplot(gs[1:, 2])
+ax5.axis('off')
+ax5.set_title('⭐ Top 10 Rated Movies', fontsize=16, fontweight='bold', pad=20)
+top_10_movies = df.nlargest(10, 'imdb_score')[['movie_title', 'imdb_score']]
+# Creating a simple text list
+movie_list = "\n".join([f"{i+1}. {row['movie_title'][:20]}... ({row['imdb_score']})" 
+                        for i, row in top_10_movies.iterrows()])
+ax5.text(0, 0.95, movie_list, family='monospace', fontsize=12, verticalalignment='top')
+
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.show()
