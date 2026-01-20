@@ -1,0 +1,103 @@
+import pandas as pd
+import numpy as np
+
+# Load dataset
+df = pd.read_csv('/content/movie_data.csv')
+
+# Drop rows where 'imdb_score' (Rating) is missing and convert to float
+df.dropna(subset=['imdb_score'], inplace=True)
+df['imdb_score'] = df['imdb_score'].astype(float)
+
+# Drop rows where 'title_year' is missing before converting to int
+df.dropna(subset=['title_year'], inplace=True)
+# Convert 'title_year' to integer and extract year (already a year)
+df['release_year'] = df['title_year'].astype(int)
+
+# Fill missing genres with 'Unknown'
+df['genres'] = df['genres'].fillna('Unknown')
+mean_imdb_score = df['imdb_score'].mean()
+median_imdb_score = df['imdb_score'].median()
+mode_imdb_score = df['imdb_score'].mode()[0]
+
+print(f"Mean: {mean_imdb_score:.2f}, Median: {median_imdb_score}, Mode: {mode_imdb_score}")
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+plt.figure(figsize=(10, 5))
+
+# Histogram
+plt.subplot(1, 2, 1)
+sns.histplot(df['imdb_score'], bins=10, kde=True, color='skyblue')
+plt.title('Distribution of imdb_scores')
+
+# Box Plot
+plt.subplot(1, 2, 2)
+sns.boxplot(y=df['imdb_score'], color='lightgreen')
+plt.title('Boxplot of imdb_scores')
+
+plt.tight_layout()
+plt.show()
+# Identify Top 10 Movies (with more than 500 votes)
+top_movies = df[df['num_voted_users'] > 500].nlargest(10, 'imdb_score')
+
+# Identify Top Genres by Average imdb_score
+top_genres = df.groupby('genres')['imdb_score'].mean().sort_values(ascending=False).head(10)
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import matplotlib.gridspec as gridspec
+
+# 1. Setup Data
+# Let's sort the data for the tables
+top_10_movies = df.nlargest(10, 'imdb_score')[['movie_title', 'genres', 'imdb_score']]
+genre_stats = df.groupby('genres')['imdb_score'].agg(['mean', 'count']).sort_values(by='mean', ascending=False)
+
+# 2. Initialize Dashboard Plot
+fig = plt.figure(figsize=(18, 12))
+fig.suptitle('🎬 MOVIE ANALYTICS DASHBOARD', fontsize=26, fontweight='bold', color='#2c3e50')
+gs = gridspec.GridSpec(3, 3, figure=fig)
+
+# --- CHART 1: Distribution (Large) ---
+ax1 = fig.add_subplot(gs[0, :2])
+sns.histplot(df['imdb_score'], bins=20, kde=True, color='#3498db', ax=ax1)
+ax1.set_title('Overall Rating Distribution', fontsize=16)
+ax1.axvline(df['imdb_score'].mean(), color='red', linestyle='--', label=f"Mean: {df['imdb_score'].mean():.2f}")
+ax1.legend()
+
+# --- CHART 2: Genre Performance (Horizontal Bar) ---
+ax2 = fig.add_subplot(gs[1, :2])
+sns.barplot(x=genre_stats['mean'], y=genre_stats.index, palette='viridis', ax=ax2)
+ax2.set_title('Average Rating by Genre', fontsize=16)
+ax2.set_xlabel('Mean Rating')
+
+# --- CHART 3: Boxplot (Spread of data) ---
+ax3 = fig.add_subplot(gs[2, :2])
+sns.boxplot(x='genres', y='imdb_score', data=df, palette='Pastel1', ax=ax3)
+ax3.set_title('Rating Consistency across Genres', fontsize=16)
+
+# --- PANEL 4: Summary Metrics (Text-based) ---
+ax4 = fig.add_subplot(gs[0, 2])
+ax4.axis('off')
+stats_text = (
+    f"SUMMARY METRICS\n"
+    f"{'—'*20}\n"
+    f"Total Movies: {len(df)}\n"
+    f"Global Mean: {df['imdb_score'].mean():.2f}\n"
+    f"Global Median: {df['imdb_score'].median():.2f}\n"
+    f"Top Genre: {genre_stats.index[0]}\n"
+    f"Lowest Genre: {genre_stats.index[-1]}"
+)
+ax4.text(0.1, 0.5, stats_text, fontsize=15, family='monospace', verticalalignment='center',
+         bbox=dict(boxstyle='round,pad=1', facecolor='#ecf0f1', alpha=0.5))
+
+# --- PANEL 5: Top 10 List (Table-like visualization) ---
+ax5 = fig.add_subplot(gs[1:, 2])
+ax5.axis('off')
+ax5.set_title('⭐ Top 10 Rated Movies', fontsize=16, pad=20)
+# Create a text-based table
+table_data = top_10_movies.to_string(index=False, justify='left')
+ax5.text(0, 0.95, table_data, family='monospace', fontsize=11, verticalalignment='top')
+
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.show()
