@@ -30,6 +30,11 @@ This project transforms a raw cinematic dataset into a high-fidelity **Analytics
 * **Language:** Python 3.x
 * **Libraries:** `Pandas` (Data Manipulation), `NumPy` (Numerical Ops), `Seaborn` / `Matplotlib` (Advanced Visualization).
 
+## 📊 visuals
+<img width="1112" height="551" alt="Screenshot 2026-01-20 221447" src="https://github.com/user-attachments/assets/b35b302f-f766-4fa0-844a-eb8748bdb435" />
+
+<img width="1261" height="518" alt="Screenshot 2026-01-20 221508" src="https://github.com/user-attachments/assets/b9dbb146-68ee-4d16-91c4-a25ab5980362" />
+
 ## 🚀 Getting Started
 1. **Clone the repository:**
    ```bash
