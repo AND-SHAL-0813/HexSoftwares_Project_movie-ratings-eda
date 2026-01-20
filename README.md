@@ -1,52 +1,48 @@
-# 🎬 Movie Analytics Dashboard
-
-A Python-based data analysis project that cleans, processes, and visualizes movie datasets to uncover trends in ratings, genres, and top-performing films.
-
-## 📌 Project Overview
-This project provides an end-to-end pipeline for exploring movie data. It focuses on transforming raw, "dirty" data into a "tidy" format and generating a comprehensive analytics dashboard. The goal is to identify how user ratings (IMDb scores) are distributed across different genres and time periods.
-
-### Key Features:
-* **Data Preprocessing**: Handling missing values and correcting data types.
-* **Statistical Analysis**: Calculating Central Tendency (Mean, Median, Mode).
-* **Exploratory Data Visualization**: Distribution plots, Box plots, and Bar charts.
-* **Interactive Analytics Dashboard**: A consolidated view of all key metrics using `Matplotlib` and `Seaborn`.
+# 🎬 Movie Analytics: Ratings & Genre Performance Dashboard
+**HexSoftware Data Science Internship | Project 2**
 
 ---
 
-## 🛠️ Components & Workflow
+## 📖 Project Overview
+This project transforms a raw cinematic dataset into a high-fidelity **Analytics Dashboard**. By performing comprehensive data cleaning and exploratory analysis on thousands of movie records, I identified key success factors in the film industry, analyzed rating distributions, and visualized genre-specific performance metrics using **Python's data science ecosystem**.
 
-### 1. Data Cleaning and Preprocessing
-Ensures the dataset is reliable by:
-* Removing rows with missing IMDb scores or release years.
-* Converting variables to appropriate types (e.g., Year to `int`, Rating to `float`).
-* Imputing missing genre information with "Unknown".
+## 🎯 Project Objectives
+* **Data Reliability:** Implement a cleaning pipeline to handle missing values and enforce strict data typing for `IMDb Scores` and `Release Years`.
+* **Statistical Profiling:** Calculate and interpret central tendency metrics (Mean, Median, Mode) to understand global user sentiment.
+* **Comparative Analysis:** Evaluate rating consistency across genres using advanced statistical visualizations.
+* **Dashboard Engineering:** Construct a multi-panel visual interface using `Matplotlib` and `Seaborn` for consolidated data storytelling.
 
-### 2. Summary Statistics
-Provides a "bird's-eye view" of the data's central tendency.
-* **Mean**: 6.42
-* **Median**: 6.50
-* **Mode**: 6.70
+## 📊 Key Insights & Results
+| Metric | Finding |
+| :--- | :--- |
+| **Global Sentiment** | The average IMDb score sits at **6.42**, showing a slightly positive user skew. |
+| **Rating Consistency** | Boxplot analysis reveals that certain genres maintain higher rating stability than others. |
+| **Data Integrity** | Successfully handled missing values across `Genres` and `IMDb Scores` to ensure zero-bias reporting. |
+| **Top Performing Genre** | Identified the highest-rated genres by mean score, filtering for volume to ensure statistical significance. |
 
-### 3. Data Visualization
-Visualizes patterns like rating frequency and consistency across genres using histograms and box plots.
+## 📂 Directory Structure
+* `notebooks/`: Jupyter Notebook with step-by-step cleaning, math, and visualization logic.
+* `scripts/`: Modular Python code for data preprocessing and dashboard generation.
+* `visuals/`: High-resolution exports of the Movie Analytics Dashboard.
+* `data/`: Source information and schema for the movie dataset used.
 
-### 4. Top-Rated Movies & Genres
-Identifies the "best" movies by filtering for credibility (minimum 500 votes) and ranks the highest-performing genres by average score.
-
----
-
-## 📊 Dashboard Preview
-The dashboard combines multiple visualizations into a single high-impact figure:
-* **Overall Rating Distribution**: Shows the frequency of scores with a KDE curve.
-* **Genre Performance**: Ranks genres by their mean IMDb rating.
-* **Rating Consistency**: Box plots showing the spread and outliers within each genre.
-* **Summary Metrics**: A textual panel for quick reference.
-
----
+## 🛠️ Technical Stack
+* **Language:** Python 3.x
+* **Libraries:** `Pandas` (Data Manipulation), `NumPy` (Numerical Ops), `Seaborn` / `Matplotlib` (Advanced Visualization).
 
 ## 🚀 Getting Started
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/AND-SHAL-0813/Movie_Analytics_Project.git](https://github.com/AND-SHAL-0813/Movie_Analytics_Project.git)
+Install Dependencies:
 
-### Prerequisites
-You will need Python 3.x and the following libraries:
-```bash
-pip install pandas numpy matplotlib seaborn
+Bash
+pip install pandas seaborn matplotlib numpy
+Run the Dashboard:
+
+Bash
+python movie_analysis.py
+👥 Author & Recognition
+SHALINI ANAND Data Science Intern HexSoftware | Project 2 Submission
+
+This project was completed as part of the HexSoftware Data Science Virtual Internship program.
